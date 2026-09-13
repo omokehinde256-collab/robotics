@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ========================================================================= -->
+  <!-- Gazebo Sim 8.11.0 ros2_control System Plugin                               -->
+  <!-- ========================================================================= -->
+  <gazebo>
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(find four_wheel_robot)/config/controllers.yaml</parameters>
+    </plugin>
+  </gazebo>
+
+  <!-- ========================================================================= -->
+  <!-- Chassis Physics & Material                                                -->
+  <!-- ========================================================================= -->
+  <gazebo reference="chassis_link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <!-- ========================================================================= -->
+  <!-- Wheel Physics & Surface Contact Properties                                -->
+  <!-- High grip friction (mu1=1.0, mu2=1.0) and contact stiffness kp/kd.        -->
+  <!-- ========================================================================= -->
+  <xacro:macro name="gazebo_wheel_physics" params="wheel_name">
+    <gazebo reference="${wheel_name}">
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+      <kp>1000000.0</kp>
+      <kd>10.0</kd>
+      <minDepth>0.001</minDepth>
+      <maxVel>0.1</maxVel>
+      <material>Gazebo/Black</material>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:gazebo_wheel_physics wheel_name="front_left_wheel_link"/>
+  <xacro:gazebo_wheel_physics wheel_name="front_right_wheel_link"/>
+  <xacro:gazebo_wheel_physics wheel_name="rear_left_wheel_link"/>
+  <xacro:gazebo_wheel_physics wheel_name="rear_right_wheel_link"/>
+
+</robot>
